@@ -1,9 +1,9 @@
 version: '3'
 services:
   eureka-service:
-    image: xcodeassociated/eureka-service:0.0.1
+    image: xcodeassociated/spochi-eureka-service:0.0.1
     build:
-      context: ./services/CloudNativeServiceDiscovery
+      context: ./services/discovery_service
       dockerfile: Dockerfile-build
     healthcheck:
       test: ["CMD", "curl", "-f","http://eureka-service:8761/actuator/health"]
@@ -13,7 +13,6 @@ services:
     restart: always
     expose:
       - "8761"
-      - "8888"
     ports:
       - "8761:8761"
     networks:

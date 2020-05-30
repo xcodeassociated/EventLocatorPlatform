@@ -29,7 +29,7 @@ services:
       - int-dev-net
 
   keycloak:
-    image: xcodeassociated/keycloak:0.0.2 #jboss/keycloak:latest
+    image: xcodeassociated/spochi-keycloak:0.0.1
     environment:
       DB_ADDR: postgres-keycloak
       DB_PORT: 5432
@@ -112,8 +112,7 @@ services:
     ports:
       - "9100:9100"
     expose:
-      - "9200"
-      - "9300"
+      - "9100"
     links:
       - elasticsearch
     depends_on:
@@ -131,8 +130,7 @@ services:
     ports:
       - "5601:5601"
     expose:
-      - "9200"
-      - "9300"
+      - "5601"
     links:
       - elasticsearch
     depends_on:
@@ -143,9 +141,9 @@ services:
       - int-dev-net
 
   eureka-service:
-    image: xcodeassociated/eureka-service:0.0.1
+    image: xcodeassociated/spochi-eureka-service:0.0.1
     build:
-      context: ./services/CloudNativeServiceDiscovery
+      context: ./services/discovery_service
       dockerfile: Dockerfile-build
     healthcheck:
       test: ["CMD", "curl", "-f","http://eureka-service:8761/actuator/health"]
@@ -155,7 +153,6 @@ services:
     restart: always
     expose:
       - "8761"
-      - "8888"
     ports:
       - "8761:8761"
     networks:
@@ -228,7 +225,7 @@ services:
       - int-dev-net
 
   event-service:
-    image: xcodeassociated/event-service:0.0.2
+    image: xcodeassociated/spochi-event-service:0.0.1
     depends_on:
       - "logstash"
       - "influxdb"
@@ -248,20 +245,10 @@ services:
       - "mongo0:mongo0"
       - "redis:redis"
     build:
-      context: ./services/CloudNativeTemplateServiceMongo
+      context: ./services/event_service
       dockerfile: Dockerfile-build
     expose:
-      - "8761"
-      - "8888"
-      - "8100"
-      - "8000"
-      - "8086"
-      - "9100"
-      - "9090"
-      - "2181"
-      - "9092"
-      - "6379"
-      - "27017"
+      - "8083"
     ports:
       - "8083:8083"
     healthcheck:
@@ -276,7 +263,7 @@ services:
       - int-dev-net
 
   user-service:
-    image: xcodeassociated/user-service:0.0.2
+    image: xcodeassociated/spochi-user-service:0.0.1
     depends_on:
       - "eureka-service"
       - "postgres"
@@ -297,15 +284,7 @@ services:
       context: ./services/CloudNativeTemplateService
       dockerfile: Dockerfile-build
     expose:
-      - "8761"
-      - "8888"
-      - "5432"
-      - "8100"
-      - "8086"
-      - "9100"
-      - "9090"
-      - "2181"
-      - "9092"
+      - "8082"
     ports:
       - "8082:8082"
     healthcheck:
@@ -320,7 +299,7 @@ services:
       - int-dev-net
 
   web-service:
-    image: xcodeassociated/web:0.0.2
+    image: xcodeassociated/spochi-web-service:0.0.1
     depends_on:
       - "user-service"
       - "event-service"

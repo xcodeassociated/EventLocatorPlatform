@@ -1,13 +1,13 @@
 version: '3'
 services:
   web-service:
-    image: xcodeassociated/web:0.0.2
+    image: xcodeassociated/spochi-web-service:0.0.1
     depends_on:
       - "user-service"
       - "event-service"
       - "keycloak"
     build:
-      context: ./services/CloudNativeEventLocatorWeb
+      context: ./services/web_service
       dockerfile: Dockerfile
     expose:
       - "3000"

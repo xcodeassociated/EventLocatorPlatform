@@ -1,7 +1,7 @@
 version: '3'
 services:
   event-service:
-    image: xcodeassociated/event-service:0.0.2
+    image: xcodeassociated/spochi-event-service:0.0.1
     depends_on:
       - "logstash"
       - "influxdb"
@@ -25,20 +25,10 @@ services:
       - "mongo2:mongo2"
       - "redis:redis"
     build:
-      context: ./services/CloudNativeTemplateServiceMongo
+      context: ./services/event_service
       dockerfile: Dockerfile-build
     expose:
-      - "8761"
-      - "8888"
-      - "8100"
-      - "8000"
-      - "8086"
-      - "9100"
-      - "9090"
-      - "2181"
-      - "9092"
-      - "6379"
-      - "27017"
+      - "8083"
     ports:
       - "8083:8083"
     healthcheck:

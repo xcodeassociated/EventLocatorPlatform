@@ -14,7 +14,7 @@ services:
       - int-dev-net
 
   keycloak:
-    image: xcodeassociated/keycloak:0.0.2 #jboss/keycloak:latest
+    image: xcodeassociated/spochi-keycloak:0.0.1
     environment:
       DB_ADDR: postgres-keycloak
       DB_PORT: 5432

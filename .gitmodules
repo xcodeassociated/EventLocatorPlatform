@@ -37,3 +37,6 @@
 [submodule "services/web_service"]
 	path = services/web_service
 	url = git@github.com:xcodeassociated/SpochiWebService.git
+[submodule "services/auth_service"]
+	path = services/auth_service
+	url = git@github.com:xcodeassociated/SpochiKeycloak.git

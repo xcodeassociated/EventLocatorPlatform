@@ -1,11 +1,11 @@
-# Cloud Native Locator
+# Spochi Application
 _Quickstart guide for developer_
 
 
 
 ## Dependencies:
 Project uses custom Keycloak image in order to handle user events via kafka message bus.
-Custom Keycloak can be found at: [CloudNativeEventLocator](https://github.com/xcodeassociated/CloudNativeEventLocator)
+Custom Keycloak can be found at: [SpochiKeycloak](https://github.com/xcodeassociated/SpochiKeycloak)
 
 
 ## Build:
@@ -46,9 +46,13 @@ $ docker-compose -f ./docker-compose_elk.yml -f ./docker-compose_kafka.yml -f ./
 _note_: ternal web tools are included in this mode, keep in mind that the JVM service has to launched separately  as well as `eureka` service
 
 ### Minimal external stack
-This setup is used for minimal `dev` profile of the spring applications
+This setup is used for minimal `dev` profile of the spring applications:
 ```bash
 $ docker-compose -f ./docker-compose_kafka.yml -f ./docker-compose_keycloak.yml -f ./docker-compose_mongo.yml -f ./docker-compose_postgres.yml -f ./docker-compose_redis.yml up
+```
+OR
+```bash
+$ docker-compose -f ./docker-compose_min-dev.yml
 ```
 _note_: external web tools are included in this mode as well
 
