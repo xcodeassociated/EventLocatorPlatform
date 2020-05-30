@@ -19,3 +19,21 @@
 [submodule "services/CloudNativeKeycloak"]
 	path = services/CloudNativeKeycloak
 	url = git@github.com:xcodeassociated/CloudNativeKeycloak.git
+[submodule "services/user_service"]
+	path = services/user_service
+	url = git@github.com:xcodeassociated/SpochiUserService.git
+[submodule "services/event_service"]
+	path = services/event_service
+	url = git@github.com:xcodeassociated/SpochiEventService.git
+[submodule "services/commons"]
+	path = services/commons
+	url = git@github.com:xcodeassociated/SpochiCommons.git
+[submodule "services/events"]
+	path = services/events
+	url = git@github.com:xcodeassociated/SpochiEvents.git
+[submodule "services/discovery_service"]
+	path = services/discovery_service
+	url = git@github.com:xcodeassociated/SpochiDiscoveryService.git
+[submodule "services/web_service"]
+	path = services/web_service
+	url = git@github.com:xcodeassociated/SpochiWebService.git
