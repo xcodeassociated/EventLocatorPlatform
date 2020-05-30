@@ -1,13 +1,13 @@
 version: '3'
 services:
   web-service:
-    image: xcodeassociated/spochi-web-service:0.0.1
+    image: xcodeassociated/elp-web-service:0.0.1
     depends_on:
       - "user-service"
       - "event-service"
       - "keycloak"
     build:
-      context: ./services/web_service
+      context: ./services/web-service
       dockerfile: Dockerfile
     expose:
       - "3000"

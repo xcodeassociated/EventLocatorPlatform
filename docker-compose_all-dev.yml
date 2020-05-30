@@ -29,7 +29,7 @@ services:
       - int-dev-net
 
   keycloak:
-    image: xcodeassociated/spochi-keycloak:0.0.1
+    image: xcodeassociated/elp-keycloak:0.0.1
     environment:
       DB_ADDR: postgres-keycloak
       DB_PORT: 5432
@@ -141,9 +141,9 @@ services:
       - int-dev-net
 
   eureka-service:
-    image: xcodeassociated/spochi-eureka-service:0.0.1
+    image: xcodeassociated/elp-eureka-service:0.0.1
     build:
-      context: ./services/discovery_service
+      context: ./services/discovery-service
       dockerfile: Dockerfile-build
     healthcheck:
       test: ["CMD", "curl", "-f","http://eureka-service:8761/actuator/health"]
@@ -225,7 +225,7 @@ services:
       - int-dev-net
 
   event-service:
-    image: xcodeassociated/spochi-event-service:0.0.1
+    image: xcodeassociated/elp-event-service:0.0.1
     depends_on:
       - "logstash"
       - "influxdb"
@@ -245,7 +245,7 @@ services:
       - "mongo0:mongo0"
       - "redis:redis"
     build:
-      context: ./services/event_service
+      context: ./services/event-service
       dockerfile: Dockerfile-build
     expose:
       - "8083"
@@ -263,7 +263,7 @@ services:
       - int-dev-net
 
   user-service:
-    image: xcodeassociated/spochi-user-service:0.0.1
+    image: xcodeassociated/elp-user-service:0.0.1
     depends_on:
       - "eureka-service"
       - "postgres"
@@ -281,7 +281,7 @@ services:
       - "dev-kafka-zookeeper:dev-kafka-zookeeper"
       - "dev-kafka-broker-1:dev-kafka-broker-1"
     build:
-      context: ./services/CloudNativeTemplateService
+      context: ./services/user-service
       dockerfile: Dockerfile-build
     expose:
       - "8082"
@@ -299,13 +299,13 @@ services:
       - int-dev-net
 
   web-service:
-    image: xcodeassociated/spochi-web-service:0.0.1
+    image: xcodeassociated/elp-web-service:0.0.1
     depends_on:
       - "user-service"
       - "event-service"
       - "keycloak"
     build:
-      context: ./services/CloudNativeEventLocatorWeb
+      context: ./services/web-service
       dockerfile: Dockerfile
     expose:
       - "3000"

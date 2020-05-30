@@ -1,7 +1,7 @@
 version: '3'
 services:
   user-service:
-    image: xcodeassociated/spochi-user-service:0.0.1
+    image: xcodeassociated/elp-user-service:0.0.1
     depends_on:
       - "eureka-service"
       - "postgres"
@@ -19,7 +19,7 @@ services:
       - "dev-kafka-zookeeper:dev-kafka-zookeeper"
       - "dev-kafka-broker-1:dev-kafka-broker-1"
     build:
-      context: ./services/user_service
+      context: ./services/user-service
       dockerfile: Dockerfile-build
     expose:
       - "8082"

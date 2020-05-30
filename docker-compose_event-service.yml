@@ -1,7 +1,7 @@
 version: '3'
 services:
   event-service:
-    image: xcodeassociated/spochi-event-service:0.0.1
+    image: xcodeassociated/elp-event-service:0.0.1
     depends_on:
       - "logstash"
       - "influxdb"

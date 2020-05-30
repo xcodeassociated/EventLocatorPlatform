@@ -1,11 +1,11 @@
-# Spochi Application
+# Event Locator Platform
 _Quickstart guide for developer_
 
 
 
 ## Dependencies:
 Project uses custom Keycloak image in order to handle user events via kafka message bus.
-Custom Keycloak can be found at: [SpochiKeycloak](https://github.com/xcodeassociated/SpochiKeycloak)
+Custom Keycloak can be found at: [elp-keycloak](https://github.com/xcodeassociated/elp-keycloak)
 
 
 ## Build:
