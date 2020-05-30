@@ -1,0 +1,21 @@
+[submodule "services/auth-service"]
+	path = services/auth-service
+	url = git@github.com:xcodeassociated/elp-keycloak.git
+[submodule "services/shared/commons"]
+	path = services/shared/commons
+	url = git@github.com:xcodeassociated/elp-commons.git
+[submodule "services/shared/events"]
+	path = services/shared/events
+	url = git@github.com:xcodeassociated/elp-events.git
+[submodule "services/discovery-service"]
+	path = services/discovery-service
+	url = git@github.com:xcodeassociated/elp-discovery-service.git
+[submodule "services/event-service"]
+	path = services/event-service
+	url = git@github.com:xcodeassociated/elp-event-service.git
+[submodule "services/user-service"]
+	path = services/user-service
+	url = git@github.com:xcodeassociated/elp-user-service.git
+[submodule "services/web-service"]
+	path = services/web-service
+	url = git@github.com:xcodeassociated/elp-web-service.git
