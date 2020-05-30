@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+        tier: backend
+    spec:
+      containers:
+        - name: redis
+          image: redis:latest
+          imagePullPolicy: Always
+          ports:
+            - name: redis
+              containerPort: 6379
+          volumeMounts:
+            - mountPath: /data
+              name: storage-volume
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: redis-storage-pvc

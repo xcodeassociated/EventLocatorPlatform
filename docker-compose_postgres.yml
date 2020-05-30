@@ -1,0 +1,37 @@
+version: "3"
+services:
+  postgres:
+    image: postgres:latest
+    container_name: "postgres"
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./volumes/postgres-data:/var/lib/postgresql/data
+      - ./entrypoint/postgres-entrypoint/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - int-dev-net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - 5050:80
+    expose:
+      - "5432"
+    links:
+      - "postgres:postgres"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+    driver: bridge

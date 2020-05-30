@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-service
+  template:
+    metadata:
+      labels:
+        app: event-service
+        tier: backend
+    spec:
+      containers:
+        - name: event-service
+          image: xcodeassociated/event-service:0.0.2
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: event-service-config
+          ports:
+            - name: http
+              containerPort: 8083

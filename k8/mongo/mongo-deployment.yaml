@@ -1,0 +1,183 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo0
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo0
+  template:
+    metadata:
+      labels:
+        app: mongo0
+        tier: backend
+    spec:
+      containers:
+        - name: mongo0
+          image: mongo:latest
+          imagePullPolicy: Always
+          entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+          envFrom:
+            - configMapRef:
+                name: mongo-config
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_INITDB_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_INITDB_ROOT_PASSWORD
+            - name: MONGO_NON_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_NON_ROOT_USERNAME
+            - name: MONGO_NON_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_NON_ROOT_PASSWORD
+          ports:
+            - name: mongo0
+              containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: storage-volume
+            - mountPath: /data/
+              name: entry-volume
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: mongo-master-storage-pvc
+        - name: entry-volume
+          persistentVolumeClaim:
+            claimName: mongo-master-entry-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo1
+  template:
+    metadata:
+      labels:
+        app: mongo1
+        tier: backend
+    spec:
+      containers:
+        - name: mongo1
+          image: mongo:latest
+          imagePullPolicy: Always
+          entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+          envFrom:
+            - configMapRef:
+                name: mongo-config
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_INITDB_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_INITDB_ROOT_PASSWORD
+            - name: MONGO_NON_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_NON_ROOT_USERNAME
+            - name: MONGO_NON_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_NON_ROOT_PASSWORD
+          ports:
+            - name: mongo1
+              containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: storage-volume
+            - mountPath: /data/
+              name: entry-volume
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: mongo-slave-a-storage-pvc
+        - name: entry-volume
+          persistentVolumeClaim:
+            claimName: mongo-slave-a-entry-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongo2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongo2
+  template:
+    metadata:
+      labels:
+        app: mongo2
+        tier: backend
+    spec:
+      containers:
+        - name: mongo2
+          image: mongo:latest
+          imagePullPolicy: Always
+          entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+          envFrom:
+            - configMapRef:
+                name: mongo-config
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_INITDB_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_INITDB_ROOT_PASSWORD
+            - name: MONGO_NON_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_NON_ROOT_USERNAME
+            - name: MONGO_NON_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_NON_ROOT_PASSWORD
+          ports:
+            - name: mongo2
+              containerPort: 27017
+          volumeMounts:
+            - mountPath: /data/db
+              name: storage-volume
+            - mountPath: /data/
+              name: entry-volume
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: mongo-slave-b-storage-pvc
+        - name: entry-volume
+          persistentVolumeClaim:
+            claimName: mongo-slave-b-entry-pvc

@@ -1,0 +1,58 @@
+version: '3'
+services:
+  elasticsearch:
+    build: elk/elasticsearch/
+    image: xcodeassociated/elasticsearch:0.0.1
+    container_name: elasticsearch
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+    restart: on-failure
+    networks:
+      - int-dev-net
+
+  logstash:
+    build: elk/logstash/
+    image: xcodeassociated/logstash:0.0.1
+    container_name: logstash
+    command: -f /etc/logstash/conf.d/
+    volumes:
+      - ./elk/logstash/config:/etc/logstash/conf.d
+    ports:
+      - "9100:9100"
+    expose:
+      - "9200"
+      - "9300"
+    links:
+      - elasticsearch
+    depends_on:
+      - "elasticsearch"
+    restart: on-failure
+    networks:
+      - int-dev-net
+
+  kibana:
+    build: elk/kibana/
+    image: xcodeassociated/kibana:0.0.1
+    container_name: kibana
+    volumes:
+      - ./elk/kibana/config/:/opt/kibana/config/
+    ports:
+      - "5601:5601"
+    expose:
+      - "9200"
+      - "9300"
+    links:
+      - elasticsearch
+    depends_on:
+      - "elasticsearch"
+      - "logstash"
+    restart: on-failure
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+    driver: bridge

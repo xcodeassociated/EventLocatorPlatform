@@ -1,0 +1,21 @@
+version: "3"
+services:
+  dev-minio:
+    container_name: minio
+    hostname: minio
+    restart: unless-stopped
+    image: minio/minio:latest
+    command: server /data
+    environment:
+      - MINIO_ACCESS_KEY=admin
+      - MINIO_SECRET_KEY=admin123
+    ports:
+      - 9001:9000
+    volumes:
+      - ./volumes/minio-storage:/data
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+    driver: bridge

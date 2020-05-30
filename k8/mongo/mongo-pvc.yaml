@@ -1,0 +1,93 @@
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-master-storage-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+     storage: 1Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-master-entry-pvc
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  volumeName: mongo-master-entry-pv
+  volumeMode: Filesystem
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+     storage: 1Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-slave-a-storage-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+     storage: 1Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-slave-a-entry-pvc
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  volumeName: mongo-slave-entry-pv
+  volumeMode: Filesystem
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+     storage: 1Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-slave-b-storage-pvc
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+     storage: 1Gi
+
+---
+
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: mongo-slave-b-entry-pvc
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  volumeName: mongo-slave-entry-pv
+  volumeMode: Filesystem
+  accessModes:
+    - ReadOnlyMany
+  resources:
+    requests:
+     storage: 1Gi

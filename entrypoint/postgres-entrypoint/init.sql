@@ -1,0 +1,4 @@
+CREATE USER service WITH PASSWORD 'service';
+
+CREATE DATABASE service;
+GRANT ALL PRIVILEGES ON DATABASE service TO service;

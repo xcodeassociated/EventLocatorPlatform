@@ -1,0 +1,2 @@
+CREATE DATABASE "userservicedb"
+CREATE DATABASE "eventservicedb"

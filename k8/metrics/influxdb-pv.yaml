@@ -1,0 +1,16 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: influxdb-entry-pv
+  labels:
+    type: local
+spec:
+  storageClassName: standard
+  persistentVolumeReclaimPolicy: Retain
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadOnlyMany
+  hostPath:
+    path: "/Users/hamashy/code/CloudNativeEventLocator/entrypoint/infulx-entrypoint/"
+    type: DirectoryOrCreate

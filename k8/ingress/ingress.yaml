@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    # ingress.kubernetes.io/force-ssl-redirect: "true"
+    # cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    # kubernetes.io/tls-acme: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  tls:
+  - hosts:
+    - hamashy.asuscomm.com
+    secretName: hamashy.asuscomm.com
+  rules:
+    - host: hamashy.asuscomm.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              serviceName: ui
+              servicePort: 80
+          - path: /eureka
+            pathType: Prefix
+            backend:
+              serviceName: eureka
+              servicePort: 80
+          - path: /auth
+            pathType: Prefix
+            backend:
+              serviceName: keycloak
+              servicePort: 80
+          - path: /user
+            pathType: Prefix
+            backend:
+              serviceName: user-service
+              servicePort: 80
+          - path: /event
+            pathType: Prefix
+            backend:
+              serviceName: event-service
+              servicePort: 80
+          - path: /kibana
+            pathType: Prefix
+            backend:
+              serviceName: kibana
+              servicePort: 5601
+          - path: /grafana
+            pathType: Prefix
+            backend:
+              serviceName: grafana
+              servicePort: 3000

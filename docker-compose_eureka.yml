@@ -1,0 +1,24 @@
+version: '3'
+services:
+  eureka-service:
+    image: xcodeassociated/eureka-service:0.0.1
+    build:
+      context: ./services/CloudNativeServiceDiscovery
+      dockerfile: Dockerfile-build
+    healthcheck:
+      test: ["CMD", "curl", "-f","http://eureka-service:8761/actuator/health"]
+      interval: 10s
+      timeout: 30s
+      retries: 10
+    restart: always
+    expose:
+      - "8761"
+      - "8888"
+    ports:
+      - "8761:8761"
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+      driver: bridge

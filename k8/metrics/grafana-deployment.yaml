@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grafana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana
+  template:
+    metadata:
+      labels:
+        app: grafana
+        tier: backend
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana:6.2.2
+          imagePullPolicy: Always
+          env:
+            - name: GF_SECURITY_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-secret
+                  key: GF_SECURITY_ADMIN_PASSWORD
+          ports:
+            - name: grafana
+              containerPort: 3000
+          volumeMounts:
+            - mountPath: /etc/grafana/provisioning/datasources/
+              name: entry-volume
+      volumes:
+        - name: entry-volume
+          persistentVolumeClaim:
+            claimName: grafana-entry-pvc

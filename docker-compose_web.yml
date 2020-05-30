@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web-service:
+    image: xcodeassociated/web:0.0.2
+    depends_on:
+      - "user-service"
+      - "event-service"
+      - "keycloak"
+    build:
+      context: ./services/CloudNativeEventLocatorWeb
+      dockerfile: Dockerfile
+    expose:
+      - "3000"
+      - "8090"
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+    driver: bridge

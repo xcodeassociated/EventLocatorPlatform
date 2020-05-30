@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-kafka-broker-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-kafka-broker-1
+  template:
+    metadata:
+      labels:
+        app: dev-kafka-broker-1
+        tier: backend
+    spec:
+      containers:
+        - name: dev-kafka-broker-1
+          image: wurstmeister/kafka
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: kafka-config
+          ports:
+            - name: kafka
+              containerPort: 9092
+          volumeMounts:
+            - mountPath: /data
+              name: storage-volume
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: kafka-storage-pvc

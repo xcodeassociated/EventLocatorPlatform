@@ -1,0 +1,21 @@
+[submodule "services/CloudNativeTemplateCommons"]
+	path = services/CloudNativeTemplateCommons
+	url = git@github.com:xcodeassociated/CloudNativeTemplateCommons.git
+[submodule "services/CloudNativeTemplateService"]
+	path = services/CloudNativeTemplateService
+	url = git@github.com:xcodeassociated/CloudNativeTemplateService.git
+[submodule "services/CloudNativeTemplateServiceMongo"]
+	path = services/CloudNativeTemplateServiceMongo
+	url = git@github.com:xcodeassociated/CloudNativeTemplateServiceMongo.git
+[submodule "services/CloudNativeServiceDiscovery"]
+	path = services/CloudNativeServiceDiscovery
+	url = git@github.com:xcodeassociated/CloudNativeServiceDiscovery.git
+[submodule "services/CloudNativeEventLocatorWeb"]
+	path = services/CloudNativeEventLocatorWeb
+	url = git@github.com:xcodeassociated/CloudNativeEventLocatorWeb.git
+[submodule "services/CloudNativeTemplateEvents"]
+	path = services/CloudNativeTemplateEvents
+	url = git@github.com:xcodeassociated/CloudNativeTemplateEvents.git
+[submodule "services/CloudNativeKeycloak"]
+	path = services/CloudNativeKeycloak
+	url = git@github.com:xcodeassociated/CloudNativeKeycloak.git

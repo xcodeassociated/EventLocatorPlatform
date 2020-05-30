@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+        tier: frontend
+    spec:
+      containers:
+        - name: ui
+          image: xcodeassociated/web:0.0.2
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: ui-config
+          ports:
+            - name: http
+              containerPort: 3000

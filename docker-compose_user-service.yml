@@ -1,0 +1,49 @@
+version: '3'
+services:
+  user-service:
+    image: xcodeassociated/user-service:0.0.2
+    depends_on:
+      - "eureka-service"
+      - "postgres"
+      - "logstash"
+      - "influxdb"
+      - "keycloak"
+      - "dev-kafka-zookeeper"
+      - "dev-kafka-broker-1"
+    external_links:
+      - "postgres:postgres"
+      - "eureka-service:eureka-service"
+      - "influxdb:influxdb"
+      - "logstash:logstash"
+      - "keycloak:keycloak"
+      - "dev-kafka-zookeeper:dev-kafka-zookeeper"
+      - "dev-kafka-broker-1:dev-kafka-broker-1"
+    build:
+      context: ./services/CloudNativeTemplateService
+      dockerfile: Dockerfile-build
+    expose:
+      - "8761"
+      - "8888"
+      - "5432"
+      - "8100"
+      - "8086"
+      - "9100"
+      - "9090"
+      - "2181"
+      - "9092"
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: ["CMD", "curl", "-f","http://user-service:8082/actuator/health"]
+      interval: 10s
+      timeout: 30s
+      retries: 10
+    restart: always
+    environment:
+      - WAIT_HOSTS=eureka-service:8761/actuator/health
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+    driver: bridge

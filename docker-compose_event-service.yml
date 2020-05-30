@@ -1,0 +1,57 @@
+version: '3'
+services:
+  event-service:
+    image: xcodeassociated/event-service:0.0.2
+    depends_on:
+      - "logstash"
+      - "influxdb"
+      - "keycloak"
+      - "dev-kafka-zookeeper"
+      - "dev-kafka-broker-1"
+      - "mongo0"
+      - "mongo1"
+      - "mongo2"
+      - "redis"
+      - "eureka-service"
+    external_links:
+      - "eureka-service:eureka-service"
+      - "influxdb:influxdb"
+      - "logstash:logstash"
+      - "keycloak:keycloak"
+      - "dev-kafka-zookeeper:dev-kafka-zookeeper"
+      - "dev-kafka-broker-1:dev-kafka-broker-1"
+      - "mongo0:mongo0"
+      - "mongo1:mongo1"
+      - "mongo2:mongo2"
+      - "redis:redis"
+    build:
+      context: ./services/CloudNativeTemplateServiceMongo
+      dockerfile: Dockerfile-build
+    expose:
+      - "8761"
+      - "8888"
+      - "8100"
+      - "8000"
+      - "8086"
+      - "9100"
+      - "9090"
+      - "2181"
+      - "9092"
+      - "6379"
+      - "27017"
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: ["CMD", "curl", "-f","http://event-service:8083/actuator/health"]
+      interval: 10s
+      timeout: 30s
+      retries: 10
+    restart: always
+    environment:
+      - WAIT_HOSTS=eureka-service:8761/actuator/health
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+      driver: bridge

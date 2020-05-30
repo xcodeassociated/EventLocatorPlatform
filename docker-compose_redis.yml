@@ -1,0 +1,35 @@
+version: "3"
+services:
+  redis:
+    container_name: redis
+    hostname: redis
+    image: "redis:latest"
+    command: redis-server --appendonly yes
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./volumes/redis-data:/data
+    networks:
+      - int-dev-net
+
+  redis-commander:
+    container_name: redis-commander
+    hostname: redis-commander
+    image: rediscommander/redis-commander:latest
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "6390:8081"
+    links:
+      - "redis:redis"
+    expose:
+      - "6379"
+    depends_on:
+      - redis
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+    driver: bridge

@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kibana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kibana
+  template:
+    metadata:
+      labels:
+        app: kibana
+        tier: backend
+    spec:
+      containers:
+        - name: kibana
+          image: postgres:latest
+          imagePullPolicy: Always
+          ports:
+            - name: kibana
+              containerPort: 5601
+          volumeMounts:
+            - mountPath: /opt/kibana/config
+              name: entry-volume
+      volumes:
+        - name: entry-volume
+          persistentVolumeClaim:
+            claimName: kibana-entry-pvc

@@ -1,0 +1,43 @@
+version: "3"
+services:
+  postgres-keycloak:
+    image: postgres:latest
+    volumes:
+      - ./volumes/postgres_data_keycloak:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: keycloak
+    ports:
+      - 5433:5432
+    networks:
+      - int-dev-net
+
+  keycloak:
+    image: xcodeassociated/keycloak:0.0.2 #jboss/keycloak:latest
+    environment:
+      DB_ADDR: postgres-keycloak
+      DB_PORT: 5432
+      DB_VENDOR: POSTGRES
+      DB_DATABASE: keycloak
+      DB_USER: keycloak
+      DB_SCHEMA: public
+      DB_PASSWORD: keycloak
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+      PROXY_ADDRESS_FORWARDING: 'true'
+    command: ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.docker=enabled"]
+    ports:
+      - 9090:8080
+    expose:
+      - "9090"
+    depends_on:
+      - postgres-keycloak
+    links:
+      - "postgres-keycloak:postgres-keycloak"
+    networks:
+      - int-dev-net
+
+networks:
+  int-dev-net:
+    driver: bridge

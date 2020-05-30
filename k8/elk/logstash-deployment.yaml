@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logstash
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logstash
+  template:
+    metadata:
+      labels:
+        app: logstash
+        tier: backend
+    spec:
+      containers:
+        - name: logstash
+          image: xcodeassociated/logstash:0.0.1
+          imagePullPolicy: Always
+          ports:
+            - name: logstash
+              containerPort: 9100
+          volumeMounts:
+            - mountPath: /var/lib/logstash
+              name: storage-volume
+            - mountPath: /etc/logstash/conf.d
+              name: entry-volume
+      volumes:
+        - name: storage-volume
+          persistentVolumeClaim:
+            claimName: logstash-storage-pvc
+        - name: entry-volume
+          persistentVolumeClaim:
+            claimName: logstash-entry-pvc
