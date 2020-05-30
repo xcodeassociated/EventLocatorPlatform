@@ -1,8 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: influxdb-config
-  labels:
-    app: influxdb
-data:
-  INFLUXDB_HTTP_AUTH_ENABLED: 'true'
