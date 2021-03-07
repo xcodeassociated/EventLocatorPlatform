@@ -1,22 +1,9 @@
 version: "3"
 services:
-  postgres-keycloak:
-    image: postgres:12.6
-    volumes:
-      - ./volumes/postgres_data_keycloak:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: keycloak
-      POSTGRES_USER: keycloak
-      POSTGRES_PASSWORD: keycloak
-    ports:
-      - 5433:5432
-    networks:
-      - int-dev-net
-
   keycloak:
     image: xcodeassociated/elp-keycloak:0.0.1
     environment:
-      DB_ADDR: postgres-keycloak
+      DB_ADDR: elp-db-postgres-0.c774s9paxcql.eu-central-1.rds.amazonaws.com
       DB_PORT: 5432
       DB_VENDOR: POSTGRES
       DB_DATABASE: keycloak
@@ -31,16 +18,11 @@ services:
       - 9090:8080
     expose:
       - "9090"
-    depends_on:
-      - postgres-keycloak
     build:
       context: ./services/auth-service
       dockerfile: Dockerfile
-    links:
-      - "postgres-keycloak:postgres-keycloak"
     networks:
       - int-dev-net
-
 networks:
   int-dev-net:
     driver: bridge

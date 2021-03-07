@@ -2,10 +2,6 @@ version: '3'
 services:
   web-service:
     image: xcodeassociated/elp-web-service:0.0.1
-    depends_on:
-      - "user-service"
-      - "event-service"
-      - "keycloak"
     build:
       context: ./services/web-service
       dockerfile: Dockerfile

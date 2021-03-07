@@ -1,7 +1,7 @@
 version: "3"
 services:
   postgres:
-    image: postgres:latest
+    image: postgres:12.6
     container_name: "postgres"
     restart: always
     environment:
@@ -16,7 +16,7 @@ services:
       - int-dev-net
 
   postgres-keycloak:
-    image: postgres:latest
+    image: postgres:12.6
     volumes:
       - ./volumes/postgres_data_keycloak:/var/lib/postgresql/data
     environment:
@@ -49,6 +49,9 @@ services:
     depends_on:
       - postgres-keycloak
       - dev-kafka-broker-1
+    build:
+      context: ./services/auth-service
+      dockerfile: Dockerfile
     links:
       - "postgres-keycloak:postgres-keycloak"
       - "dev-kafka-broker-1:dev-kafka-broker-1"
