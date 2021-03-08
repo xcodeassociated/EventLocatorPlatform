@@ -1,7 +1,7 @@
 version: "3"
 services:
   keycloak:
-    image: xcodeassociated/elp-keycloak:0.0.1
+    image: xcodeassociated/elp-keycloak:0.0.2
     environment:
       DB_ADDR: elp-db-postgres-0.c774s9paxcql.eu-central-1.rds.amazonaws.com
       DB_PORT: 5432
@@ -13,6 +13,10 @@ services:
       KEYCLOAK_USER: admin
       KEYCLOAK_PASSWORD: admin
       PROXY_ADDRESS_FORWARDING: 'true'
+      KEYCLOAK_KAFKA_TOPIC_EVENTS: keycloak_event
+      KEYCLOAK_KAFKA_TOPIC_ADMIN: keycloak_admin
+      KEYCLOAK_KAFKA_CLIENTID: keycloak
+      KEYCLOAK_KAFKA_BOOTSTRAPSERVER: b-2.elp-kafka-cluster-0.izyhdb.c4.kafka.eu-central-1.amazonaws.com:9092
     command: ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.docker=enabled"]
     ports:
       - 9090:8080
