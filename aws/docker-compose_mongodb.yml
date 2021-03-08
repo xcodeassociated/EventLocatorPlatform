@@ -1,0 +1,26 @@
+version: "3"
+services:
+  mongo0:
+    image: mongo:latest
+    container_name: mongo0
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+      - MONGO_INITDB_DATABASE=mongo
+      - MONGO_NON_ROOT_USERNAME=user
+      - MONGO_NON_ROOT_PASSWORD=user
+    expose:
+      - "27017"
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./volumes/mongo/mongo-data-0:/data/db
+      - ./volumes/mongo/mongo-db-config-0:/data/configdb
+      - ./entrypoint/mongodb-entrypoint/single/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+    restart: always
+    networks:
+      - int-dev-net
+networks:
+  int-dev-net:
+    driver: bridge

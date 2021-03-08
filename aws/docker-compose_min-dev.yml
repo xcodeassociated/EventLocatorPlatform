@@ -47,6 +47,8 @@ services:
       KAFKA_BROKER_ID: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
       KAFKA_CREATE_TOPICS: "dev_sample_topic:1:1:compact"
+      ## note: AWS memory limit
+      KAFKA_HEAP_OPTS: "-Xmx512M"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./volumes/dev-kafka-data:/kafka
