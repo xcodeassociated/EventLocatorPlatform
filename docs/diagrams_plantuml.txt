@@ -1,0 +1,263 @@
+// c1 flow diagram
+@startuml
+
+actor Użytkownik
+box "Platforma" #LightBlue
+    participant Mikroserwis
+    Użytkownik->Mikroserwis: Interakcja użytkownika
+        activate Mikroserwis
+            Mikroserwis->Mikroserwis: Przetwarzanie zapytania
+                activate Mikroserwis #FFBBBB
+                note right: Wykonanie zapytania w bazie danych
+            return Wynik zapytania
+end box
+
+    Mikroserwis->Użytkownik: Odpowiedź interakcji
+    deactivate Mikroserwis
+
+@enduml
+
+-------------------------------------
+// c1
+
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+
+Person(user, "Użytkownik")
+System_Boundary(c1, "Platforma społecznościowa") {
+    Container(platform, "Wewnętrzny system", "Mikroserwisy, Bazy Danych, Kolejka Komunikatów", "System umożliwiający tworzenie, interakcję i zarządzanie wydarzeniami")
+}
+
+Rel(user, platform, "Uses", "REST API")
+Rel(platform, user, "Uses", "REST API")
+@enduml
+
+-------------------------------------
+// c2
+
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+
+Person(user, "Użytkownik")
+System_Boundary(c1, "Platforma społecznościowa") {
+
+    Container(web_app, "Serwis front-end", "Seriws hostujący stronę WWW", "Miejsce interkacji użytkownika z systemem")
+
+    Container(auth_service, "Keycloak", "Seriws zajmujący się aytentyfikacją i autoryzacją użytkowników")
+
+    ContainerDb(keycloak_database, "Baza Keycloak", "PostgreSQL", "Baza danych apliakcji Keycloak")
+
+    Container(user_service, "Serwis użytkowników", "Mikroserwis", "Seriws agregujący dane użytkowników")
+
+    ContainerDb(user_database, "Baza danych użytkowaników", "PostgreSQL", "Baza danych serwisu użytkowników")
+
+    Container(event_service, "Serwis wydarzeń", "Mikroserwis", "Seriws zarządzający wydarzeniami społecznościowymi")
+
+    ContainerDb(event_database, "Baza danych wydarzeń", "MongoDB", "Baza danych wydarzeń społecznościowych")
+
+    Container(kafka, "Kolejka komunikatów", "Kafka", "Szyna wiadomości systemowyc")
+}
+
+Rel_L(user, web_app, "Zapytanie użytkownika", "REST API")
+Rel_L(web_app, user, "Odpowiedź systemu", "REST API")
+
+Rel(user, auth_service, "Zapytanie autoryzacji", "REST API")
+Rel_L(auth_service, user, "Odpowiedź autoryzacji", "REST API")
+
+Rel(auth_service, keycloak_database, "Zapytanie bazodanowe", "Socket")
+Rel(keycloak_database, auth_service, "Dane autoryzacyjne", "Socket")
+
+Rel_L(web_app, user_service, "Zapytanie o dane użytkownika", "REST API")
+Rel_R(user_service, web_app, "Odpowiedź z danymi użytkownika", "REST API")
+
+Rel(user_service, user_database, "Zapytanie bazodanowe", "Socket")
+Rel(user_database, user_service, "Dane użytkownika", "Socket")
+
+Rel(web_app, event_service, "Zapytanie o wydarzenia społęcznościowe", "REST API")
+Rel(event_service, web_app, "Odpowiedź z danymi wydarzenia", "REST API")
+
+Rel(event_service, event_database, "Zapytanie bazodanowe", "Socket")
+Rel(event_database, event_service, "Dane wydarzenia", "Socket")
+
+Rel(auth_service, kafka, "Publikacja wiadomości", "Kafka")
+Rel(kafka, user_service, "Odczyt wiadomości", "Kafka")
+
+@enduml
+
+-------------------------------------
+// c3 user_service
+
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+
+Person(user, "Użytkownik")
+
+Container(kafka, "Kafka", "Kolejka komunikatów")
+
+System_Boundary(c3, "Serwis użytkowników") {
+
+  Boundary(api_controller_box, "REST API") {
+     Container(userdata_query_controller, "REST Kontroler zapytań", "API")
+     Container(userdata_command_controller, "REST Kontroler komend", "API")
+  }
+
+  Boundary(kafka_consumer_box, "Kafka") {
+     Container(kafka_consumer, "Kafka Konsument", "Komsument wiadomości")
+     Container(user_event_converter, "Konwerter wiadomości", "Pobiera, waliduje i konwertuje wiadomości z koleiki")
+  }
+
+  Boundary(services_box, "Serwisy") {
+     Container(user_event_service, "Serwis wiadomości", "Przetwarza wiadomości z koleiki i pobiera dodatkowe dane z Keycloak")
+     Container(userservice, "Serwis użytkowników", "Przetwarza zapytania i komendy z API")
+  }
+
+  Boundary(repositories_box, "Repozytoria") {
+     Container(user_repository, "Repozytorium użytkowników", "Repozytorium Srping Data JPA")
+  }
+
+}
+
+ContainerDb(user_db, "Baza danych użytkowaników", "PostgreSQL", "Baza danych serwisu użytkowników")
+
+Lay_L(api_controller_box, kafka_consumer_box)
+
+
+Rel(kafka, kafka_consumer, "Odebranie wiadomości z koleiki", "Kafka")
+
+Rel(user, userdata_query_controller, "Zapytanie użytkownika", "REST API")
+Rel(userdata_query_controller, user, "Odpowiedź serwisu", "REST API")
+
+Rel(user, userdata_command_controller, "Zapytanie użytkownika", "REST API")
+Rel(userdata_command_controller, user, "Odpowiedź serwisu", "REST API")
+
+Rel(userdata_query_controller, userservice, " ")
+Rel(userservice, userdata_query_controller, " ")
+
+Rel(userdata_command_controller, userservice, " ")
+Rel(userservice, userdata_command_controller, " ")
+
+
+Rel(kafka_consumer, user_event_converter, " ")
+Rel_R(user_event_converter, user_event_service, " ")
+
+Rel(user_event_service, userservice, " ")
+
+Rel(userservice, user_repository, " ")
+Rel(user_repository, userservice, " ")
+
+Rel(user_repository, user_db, "Zapis danych", JDBC)
+Rel(user_db, user_repository, "Odczyt danych", JDBC)
+@enduml
+
+-------------------------------------
+// c3 event_service
+
+@startuml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Container.puml
+
+Person(user, "Użytkownik")
+
+System_Boundary(c3, "Serwis wydarzeń") {
+
+  Boundary(api_controller_box, "REST API") {
+     Container(user_history_controller, "REST Kontroler historii wydarzeń użytkownika", "API")
+     Container(user_data_controller, "REST Kontroler danych użytkownika", "API")
+     Container(event_controller, "REST Kontroler wydarzeń", "API")
+     Container(category_controller, "REST Kontroler kategorii wydarzeń", "API")
+     Container(spot_controller, "REST Kontroler miejsc", "API")
+  }
+
+  Boundary(services_box, "Serwisy") {
+     Container(user_history_service, "Serwis historii użytkowników", "Przechowuje historię wydarzeń użytkownika")
+     Container(user_data_service, "Serwis danych użytkownika", "Przechowuje dane użytkownika")
+     Container(event_service, "Serwis wydarzeń", "Przetwarza zapytania o wydarzenia")
+     Container(category_service, "Serwis kategorii", "Przechowuje kategorie wydarzeń")
+     Container(spot_service, "Serwis miejsc", "PPrzechowuje popularne miejsca")
+  }
+
+  Boundary(repositories_box, "Repozytoria") {
+     Container(user_history_repository, "Repozytorium historii użytkownika", "Repozytorium Srping Data MongoDb")
+     Container(user_data_repository, "Repozytorium danych użytkownika", "Repozytorium Srping Data MongoDb")
+     Container(event_repository, "Repozytorium wydarzeń", "Repozytorium Srping Data MongoDb")
+     Container(category_repository, "Repozytorium kategorii", "Repozytorium Srping Data MongoDb")
+     Container(spot_repository, "Repozytorium miejsc", "Repozytorium Srping Data MongoDb")
+  }
+
+}
+
+ContainerDb(event_db, "Baza danych wydarzeń", "MongoDB", "Baza danych serwisu wydarzeń")
+
+
+
+Rel_L(category_controller, user, " ")
+Rel(user, category_controller, " ")
+
+Rel(user_data_controller, user, " ")
+Rel(user, user_data_controller, " ")
+
+Rel(user_history_controller, user, " ")
+Rel(user, user_history_controller, " ")
+
+Rel(event_controller, user, " ")
+Rel(user, event_controller, " ")
+
+Rel(spot_controller, user, " ")
+Rel(user, spot_controller, " ")
+
+
+Rel(event_controller, event_service, " ")
+Rel(event_service, event_controller, " ")
+
+Rel(category_controller, category_service, " ")
+Rel(category_service, category_controller, " ")
+
+Rel(user_data_controller, user_data_service, " ")
+Rel(user_data_service, user_data_controller, " ")
+
+Rel(user_history_controller, user_history_service, " ")
+Rel(user_history_service, user_history_controller, " ")
+
+Rel(spot_controller, spot_service, " ")
+Rel(spot_service, spot_controller, " ")
+
+Lay_R(user_data_controller, event_controller)
+Lay_R(user_data_service, event_service)
+Lay_L(category_service, event_service)
+Rel_R(user_data_service, event_service, " ")
+Rel_L(category_service, event_service, " ")
+
+
+Rel(event_repository, event_service, " ")
+Rel(event_service, event_repository, " ")
+
+Rel(category_repository, category_service, " ")
+Rel(category_service, category_repository, " ")
+
+Rel(user_data_repository, user_data_service, " ")
+Rel(user_data_service, user_data_repository, " ")
+
+Rel(user_history_repository, user_history_service, " ")
+Rel(user_history_service, user_history_repository, " ")
+
+Rel(spot_repository, spot_service, " ")
+Rel(spot_service, spot_repository, " ")
+
+Rel(category_repository, user_data_service, " ")
+
+
+
+Rel(event_repository, event_db, " ")
+Rel(event_db, event_repository, " ")
+
+Rel(category_repository, event_db, " ")
+Rel(event_db, category_repository, " ")
+
+Rel(user_data_repository, event_db, " ")
+Rel(event_db, user_data_repository, " ")
+
+Rel(user_history_repository, event_db, " ")
+Rel(event_db, user_history_repository, " ")
+
+Rel(spot_repository, event_db, " ")
+Rel(event_db, spot_repository, " ")
+@enduml
