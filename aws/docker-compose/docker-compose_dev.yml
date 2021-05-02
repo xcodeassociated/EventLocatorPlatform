@@ -21,7 +21,7 @@ services:
     ports:
       - 9090:8080
     expose:
-      - "9090"
+      - "9090"s
     networks:
       - int-dev-net
 
@@ -78,6 +78,21 @@ services:
       - ./volumes/mongo/mongo-db-config-0:/data/configdb
       - ./entrypoint/mongodb-entrypoint/single/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
     restart: always
+    networks:
+      - int-dev-net
+
+  eureka-service:
+    image: xcodeassociated/eureka-service:0.0.1
+    healthcheck:
+      test: ["CMD", "curl", "-f","http://eureka-service:8761/actuator/health"]
+      interval: 10s
+      timeout: 30s
+      retries: 10
+    restart: always
+    expose:
+      - "8761"
+    ports:
+      - "8761:8761"
     networks:
       - int-dev-net
 
