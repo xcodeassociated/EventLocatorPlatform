@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: eureka-service-config
+  labels:
+    app: eureka-service
+data:
+  WAIT_HOSTS: ""

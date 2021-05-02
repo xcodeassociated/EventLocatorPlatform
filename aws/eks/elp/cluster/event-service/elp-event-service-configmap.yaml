@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: event-service-config
+  labels:
+    app: event-service
+data:
+  SPRING_DATA_MONGODB_HOST: "mongodb-cluster"
+  SPRING_DATA_MONGODB_USERNAME: "user"
+  # SPRING_DATA_MONGODB_PORT: 27017
+  SPRING_DATA_MONGODB_DATABASE: "test"
+  KEYCLOAK_AUTH-SERVER-URL: "https://cnf.sh/auth"
+  KEYCLOAK_REALM: "service"
+  KEYCLOAK_RESOURCE: "service"
+  EXTERNAL_KEYCLOAK_API_URL: "https://cnf.sh/auth"
+  EXTERNAL_TOKEN_API_URL: "https://cnf.sh/auth/realms/service/protocol/openid-connect/"
+  EXTERNAL_TOKEN_USERNAME: "admin@admin.com"
+  EXTERNAL_TOKEN_CLIENTID: "service"
+  EXTERNAL_TOKEN_GRANTTYPE: "password"
+  EXTERNAL_SERVICE_API_URL: "https://api.cnf.sh/user/api/"
+  # SPRINGDOC_SWAGGER-UI_CONFIG-URL: "" #"/event/configuration"
+  SPRINGDOC_SWAGGER-UI_PATH: "/swagger-ui.html"
+  # SPRINGDOC_WEBJARS_PREFIX: "" #"/event/webjars"
+  # SPRINGDOC_API-DOCS_PATH: "" #"/event/v3/api-docs"
+  KAFKA_CONSUMER_TOPIC: "dev_sample_topic_b"
+  KAFKA_PRODUCER_TOPIC: "dev_sample_topic_a"
+  KAFKA_BOOTSTRAP-SERVERS: "http://dev-kafka-broker-1:9092"
+  KAFKA_CONSUMER-GROUP-ID: "dev-event-customer-group"
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-service:8761/eureka"
+  KEYCLOAK_REALM-KEY: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgMeonZv2Y0s4HPF4ksZEW9oW8G552MoRWzQLH6wnsIZwwqzeGESjVu8+fP34LtwRzEt2dXejKBf6mxPK/JOIjFAlNvkOuOYslalDFRPhV3P6BwcD0aojA5wejzyXRVFUvD8wRxI7XXjgQw+bj/TA7kw9LPNXMrMMLtiPuXu/Ldb02g5DYpXereYxlVQU/14WBSeUFkpKvy9nPEp+M5tuB4n+0QO87tqqcCfVmryaTe2ypd2io6/rkqGz+AJC3KZ4xPYBmt+pojt13P1PmI/WnjvyxE16vIwexqg0DP9H714fbzBEST5STRsWhkYLssd78bMvyp1aLwqiTmR6Mzh8dQIDAQAB"

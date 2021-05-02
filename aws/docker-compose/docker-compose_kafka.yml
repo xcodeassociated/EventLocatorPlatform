@@ -1,33 +1,12 @@
 version: "3"
 services:
-  keycloak:
-    image: xcodeassociated/elp-keycloak:0.0.1
-    environment:
-      DB_ADDR: elp-db-postgres-0.c774s9paxcql.eu-central-1.rds.amazonaws.com
-      DB_PORT: 5432
-      DB_VENDOR: POSTGRES
-      DB_DATABASE: keycloak
-      DB_USER: keycloak
-      DB_SCHEMA: public
-      DB_PASSWORD: keycloak
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
-      PROXY_ADDRESS_FORWARDING: 'true'
-    command: ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.docker=enabled"]
-    ports:
-      - 9090:8080
-    expose:
-      - "9090"
-    networks:
-      - int-dev-net
-
   dev-kafka-zookeeper:
     container_name: dev-kafka-zookeeper
     hostname: dev-kafka-zookeeper
     restart: unless-stopped
     image: wurstmeister/zookeeper
     ports:
-      - "127.0.0.1:2181:2181"
+      - "0.0.0.0:2181:2181"
     volumes:
       - ./volumes/dev-kafka-zookeeper-data:/data
     networks:
@@ -39,7 +18,7 @@ services:
     restart: unless-stopped
     image: wurstmeister/kafka
     ports:
-      - "127.0.0.1:9092:9092"
+      - "0.0.0.0:9092:9092"
     environment:
       KAFKA_ADVERTISED_HOST_NAME: dev-kafka-broker-1
       KAFKA_ADVERTISED_PORT: 9092

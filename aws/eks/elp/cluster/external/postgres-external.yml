@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+spec:
+  type: ExternalName
+  externalName: elp-db-postgres-0.c774s9paxcql.eu-central-1.rds.amazonaws.com

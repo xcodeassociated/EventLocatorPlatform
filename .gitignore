@@ -7,6 +7,9 @@
 # ignore services database docker volumes
 volumes/
 
+# include aws docker-compose volumes placeholder
+!aws/docker-compose/volumes/.placeholder
+
 # certs
 *.pem
 
@@ -308,3 +311,10 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 /**/Network Trash Folder
 /**/Temporary Items
 /**/.apdisk
+
+
+## mobile apps templates:
+services/mobile-app/templates/*
+
+## kafka scripts for aws
+aws/kafka_*

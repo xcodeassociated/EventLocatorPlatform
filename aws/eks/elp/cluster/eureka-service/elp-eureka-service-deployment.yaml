@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-service
+  template:
+    metadata:
+      labels:
+        app: eureka-service
+    spec:
+      containers:
+        - name: eureka-service
+          image: xcodeassociated/eureka-service:0.0.1
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: eureka-service-config
+          ports:
+            - name: http
+              containerPort: 8761

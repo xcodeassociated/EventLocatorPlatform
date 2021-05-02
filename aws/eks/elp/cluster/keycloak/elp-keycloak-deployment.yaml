@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elp-keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elp-keycloak
+  template:
+    metadata:
+      labels:
+        app: elp-keycloak
+    spec:
+      hostAliases:
+        - ip: "3.64.87.26"
+          hostnames:
+            - "dev-kafka-broker-1"
+      containers:
+        - name: elp-keycloak
+          image: xcodeassociated/elp-keycloak:0.0.1
+          # command: ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.docker=enabled"]
+          imagePullPolicy: Always
+          env:
+           - name: DB_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: elp-keycloak-secrets
+                 key: DB_PASSWORD
+           - name: KEYCLOAK_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: elp-keycloak-secrets
+                 key: KEYCLOAK_PASSWORD
+          envFrom:
+            - configMapRef:
+                name: elp-keycloak-config
+          ports:
+            - name: http
+              containerPort: 8080

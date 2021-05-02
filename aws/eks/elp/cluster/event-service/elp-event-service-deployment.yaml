@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: event-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: event-service
+  template:
+    metadata:
+      labels:
+        app: event-service
+    spec:
+      hostAliases:
+        - ip: "3.64.87.26"
+          hostnames:
+            - "dev-kafka-broker-1"
+      containers:
+        - name: elp-event-service
+          image: xcodeassociated/event-service:0.0.1
+          imagePullPolicy: Always
+          env:
+           # - name: SPRING_DATA_MONGODB_PORT
+           #   value: 27017
+           # - name: KEYCLOAK_REALM-KEY
+           #   valueFrom:
+           #     secretKeyRef:
+           #       name: event-service-secrets
+           #       key: KEYCLOAK_REALM-KEY
+           - name: EXTERNAL_TOKEN_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: event-service-secrets
+                 key: EXTERNAL_TOKEN_PASSWORD
+           - name: SPRING_DATA_MONGODB_PASSWORD
+             valueFrom:
+               secretKeyRef:
+                 name: event-service-secrets
+                 key: SPRING_DATA_MONGODB_PASSWORD
+          envFrom:
+            - configMapRef:
+                name: event-service-config
+          ports:
+            - name: http
+              containerPort: 8083

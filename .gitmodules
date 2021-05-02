@@ -19,3 +19,7 @@
 [submodule "services/web-service"]
 	path = services/web-service
 	url = git@github.com:xcodeassociated/elp-web-service.git
+[submodule "services/mobile-app/elp-expo"]
+	path = services/mobile-app/elp-expo
+	url = git@github.com:xcodeassociated/elp-mobile-app.git
+	branch = wip-keycloak

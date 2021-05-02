@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: elp-keycloak-config
+  labels:
+    app: elp-keycloak
+data:
+  DB_ADDR: postgres
+  DB_PORT: "5432"
+  DB_VENDOR: "POSTGRES"
+  DB_DATABASE: "keycloak-2"
+  DB_USER: "keycloak"
+  DB_SCHEMA: "public"
+  KEYCLOAK_USER: "admin"
+  PROXY_ADDRESS_FORWARDING: "true"
+  KEYCLOAK_KAFKA_TOPIC_EVENTS: "keycloak_event"
+  KEYCLOAK_KAFKA_TOPIC_ADMIN: "keycloak_admin"
+  KEYCLOAK_KAFKA_CLIENTID: "keycloak"
+  KEYCLOAK_KAFKA_BOOTSTRAPSERVER: "PLAINTEXT://3.64.87.26:9092"
+  PROXY_ADDRESS_FORWARDING: "true"
+  HTTPS_PROXY_PORT: "443"

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-service
+  template:
+    metadata:
+      labels:
+        app: web-service
+    spec:
+      containers:
+        - name: elp-web
+          image: xcodeassociated/web-service:0.0.1
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: web-service-config
+          ports:
+            - name: http
+              containerPort: 3000

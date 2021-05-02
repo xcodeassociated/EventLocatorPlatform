@@ -29,7 +29,7 @@ services:
       - int-dev-net
 
   keycloak:
-    image: xcodeassociated/elp-keycloak:0.0.1
+    image: xcodeassociated/elp-keycloak:0.0.1-local # jboss/keycloak:10.0.0 #
     environment:
       DB_ADDR: postgres-keycloak
       DB_PORT: 5432
@@ -38,9 +38,14 @@ services:
       DB_USER: keycloak
       DB_SCHEMA: public
       DB_PASSWORD: keycloak
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin
+      # note: uncomment for new instance
+      # KEYCLOAK_USER: admin
+      # KEYCLOAK_PASSWORD: admin
       PROXY_ADDRESS_FORWARDING: 'true'
+      KEYCLOAK_KAFKA_TOPIC_EVENTS: keycloak_event
+      KEYCLOAK_KAFKA_TOPIC_ADMIN: keycloak_admin
+      KEYCLOAK_KAFKA_CLIENTID: keycloak-local
+      KEYCLOAK_KAFKA_BOOTSTRAPSERVER: "dev-kafka-broker-1:9092"
     command: ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.docker=enabled"]
     ports:
       - 9090:8080
