@@ -95,9 +95,6 @@ services:
       - "dev-kafka-zookeeper:dev-kafka-zookeeper"
       - "dev-kafka-broker-1:dev-kafka-broker-1"
       - "mongodb-cluster:mongodb-cluster"
-    build:
-      context: ./services/event_service
-      dockerfile: Dockerfile-build
     expose:
       - "8083"
     ports:
@@ -151,9 +148,6 @@ services:
       - "keycloak:keycloak"
       - "dev-kafka-zookeeper:dev-kafka-zookeeper"
       - "dev-kafka-broker-1:dev-kafka-broker-1"
-    build:
-      context: ./services/user-service
-      dockerfile: Dockerfile-build
     expose:
       - "8082"
     ports:
@@ -194,12 +188,8 @@ services:
 
   web-service:
     image: xcodeassociated/web-service:0.0.1
-    build:
-      context: ./services/web-service
-      dockerfile: Dockerfile
     expose:
       - "3000"
-      - "8090"
     ports:
       - "3000:3000"
     restart: always
