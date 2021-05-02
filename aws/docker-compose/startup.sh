@@ -16,5 +16,8 @@ else
     echo "error: Could not remove kafka volumes"
 fi
 
+echo "info: Starting up haproxy..."
+haproxy -f haproxy/haproxy.cfg &
+
 echo "info: Starting up ELP dev cluster..."
 docker-compose -f ./docker-compose_dev.yml up --remove-orphans &
