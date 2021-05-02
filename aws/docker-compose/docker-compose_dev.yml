@@ -21,7 +21,7 @@ services:
     ports:
       - 9090:8080
     expose:
-      - "9090"s
+      - "9090"
     networks:
       - int-dev-net
 
