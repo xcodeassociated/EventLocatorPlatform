@@ -16,7 +16,7 @@ services:
       KEYCLOAK_KAFKA_TOPIC_EVENTS: keycloak_event
       KEYCLOAK_KAFKA_TOPIC_ADMIN: keycloak_admin
       KEYCLOAK_KAFKA_CLIENTID: keycloak
-      KEYCLOAK_KAFKA_BOOTSTRAPSERVER: PLAINTEXT://127.0.0.1:9092
+      KEYCLOAK_KAFKA_BOOTSTRAPSERVER: PLAINTEXT://dev-kafka-broker-1:9092
     command: ["-b", "0.0.0.0", "-Dkeycloak.profile.feature.docker=enabled"]
     ports:
       - 9090:8080
