@@ -202,7 +202,7 @@ services:
       - int-dev-net
 
   web-service:
-    image: xcodeassociated/web-service:0.0.1
+    image: xcodeassociated/web-service:0.0.1-dev
     expose:
       - "3000"
     ports:
