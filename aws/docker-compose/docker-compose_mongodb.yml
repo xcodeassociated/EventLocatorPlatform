@@ -5,11 +5,11 @@ services:
     container_name: mongodb-cluster
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rs0" ]
     environment:
-      - MONGO_INITDB_ROOT_USERNAME=admin
-      - MONGO_INITDB_ROOT_PASSWORD=admin
-      - MONGO_INITDB_DATABASE=mongo
-      - MONGO_NON_ROOT_USERNAME=user
-      - MONGO_NON_ROOT_PASSWORD=user
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin
+      MONGO_INITDB_DATABASE: mongo
+      MONGO_NON_ROOT_USERNAME: user
+      MONGO_NON_ROOT_PASSWORD: user
     expose:
       - "27017"
     ports:
