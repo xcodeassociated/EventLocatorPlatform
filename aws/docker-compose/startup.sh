@@ -24,7 +24,7 @@ init_mongodb () {
 
 init_event_categories () {
   echo "
-  db.test.eventCategoryDocument.insert(
+  db.eventCategoryDocument.insert(
   {
     \"_id\" : ObjectId(\"5f82e229de878118265be485\"),
     \"title\" : \"TestCategoryA\",
@@ -38,7 +38,7 @@ init_event_categories () {
     \"_class\" : \"com.xcodeassociated.service.model.db.EventCategoryDocument\"
   });
 
-  db.test.eventCategoryDocument.insert(
+  db.eventCategoryDocument.insert(
   {
     \"_id\" : ObjectId(\"5f831e9dbd645655fdd47085\"),
     \"title\" : \"TestCategoryB\",
