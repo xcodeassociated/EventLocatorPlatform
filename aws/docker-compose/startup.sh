@@ -18,9 +18,9 @@ else
     echo "error: Could not stop all of docker processes"
 fi
 
-rm -rf volumes/dev-kafka-*
+rm -rf volumes/*
 if [ $? -eq 0 ]; then
-    echo "info: Removed kafka cluster volumes"
+    echo "info: Removed volumes data"
 else
     echo "error: Could not remove kafka volumes"
 fi
@@ -30,3 +30,26 @@ haproxy -f haproxy/haproxy.cfg &
 
 echo "info: Starting up ELP dev cluster..."
 docker-compose -f ./docker-compose_dev.yml up --remove-orphans &
+
+sleep 5
+
+echo "
+db.createCollection(\"test\");
+db.createUser(
+        {
+            user: \"user\",
+            pwd: \"user\",
+            roles: [
+                {
+                    role: \"readWrite\",
+                    db: \"test\"
+                }
+            ]
+        }
+);
+db.test.insert({\"name\": \"test insert\"});
+
+rs.initiate();
+" | docker exec -i mongodb-cluster mongo
+
+echo "info: Startup finished"
