@@ -7,7 +7,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin
-      MONGO_INITDB_DATABASE: mongo
+      MONGO_INITDB_DATABASE: test
       MONGO_NON_ROOT_USERNAME: user
       MONGO_NON_ROOT_PASSWORD: user
     expose:

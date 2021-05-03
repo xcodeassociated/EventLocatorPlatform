@@ -10,9 +10,9 @@
 //       ]
 //    }
 // );
-
+conn = new Mongo();
+db = conn.getDB("test")
 db.createCollection("test");
-db.test.insert({"name": "test insert"});
 db.createUser(
         {
             user: "user",
@@ -25,6 +25,7 @@ db.createUser(
             ]
         }
 );
+db.test.insert({"name": "test insert"});
 
 // in case of OTHER replica state:
 // rs.reconfig(
