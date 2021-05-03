@@ -86,7 +86,7 @@ else
     exit 1;
 fi
 
-rm -rf "$pwd/volumes/*"
+rm -rf "volumes/*"
 if [ $? -eq 0 ]; then
     echo "info: Removed volumes data";
 else
@@ -96,7 +96,7 @@ fi
 
 echo "info: Restarting/Starting haproxy..."
 pkill -9 "haproxy";
-haproxy -f "$pwd/haproxy/haproxy.cfg" &
+haproxy -f "haproxy/haproxy.cfg" &
 
 echo "info: Starting up ELP dev cluster..."
 docker-compose -f "./docker-compose_dev.yml" up --remove-orphans &
