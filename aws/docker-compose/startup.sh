@@ -61,7 +61,14 @@ else
     exit 1;
 fi
 
-pwd=$(pwd)
+if [ $@ -lt 2 ]; then
+  echo "error: Please pass PATH as argument";
+  exit 1;
+else
+  echo "info: Using PATH: $1"
+fi
+
+pwd=$1
 
 echo "info: Starting up...";
 
