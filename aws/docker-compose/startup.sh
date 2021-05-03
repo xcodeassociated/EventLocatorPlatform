@@ -82,17 +82,8 @@ else
     exit 1;
 fi
 
-
-if pgrep -x "haproxy -f haproxy/haproxy.cfg" || pgrep -x "sudo haproxy -f haproxy/haproxy.cfg" > /dev/null
-then
-    echo "info: Haproxy is running, restarting...";
-    pkill -9 "haproxy -f haproxy/haproxy.cfg";
-    pkill -9 "sudo haproxy -f haproxy/haproxy.cfg";
-else
-    echo "info: Haproxy is not running";
-fi
-
-echo "info: Starting up haproxy..."
+echo "info: Restarting/Starting haproxy..."
+pkill -9 "haproxy";
 haproxy -f haproxy/haproxy.cfg &
 
 echo "info: Starting up ELP dev cluster..."
