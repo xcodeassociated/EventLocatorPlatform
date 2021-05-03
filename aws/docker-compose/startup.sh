@@ -94,21 +94,23 @@ else
     exit 1;
 fi
 
+sleep 5;
+
 echo "info: Restarting/Starting haproxy..."
 pkill -9 "haproxy";
-haproxy -f "haproxy/haproxy.cfg" &
+/usr/sbin/haproxy -f "haproxy/haproxy.cfg" &
 
 echo "info: Starting up ELP dev cluster..."
 docker-compose -f "./docker-compose_dev.yml" up --remove-orphans &
 
-sleep 5;
+sleep 10;
 
 if init_mongodb | grep -q 'WriteCommandError'; then
    sleep 2;
    init_mongodb;
 fi
 
-sleep 2;
+sleep 5;
 
 echo "info: Init event categories..."
 if init_event_categories | grep -qi "inserted"; then
