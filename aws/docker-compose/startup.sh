@@ -78,7 +78,7 @@ rm -rf volumes/*
 if [ $? -eq 0 ]; then
     echo "info: Removed volumes data";
 else
-    echo "error: Could not remove kafka volumes";
+    echo "error: Could not remove volumes data";
     exit 1;
 fi
 
