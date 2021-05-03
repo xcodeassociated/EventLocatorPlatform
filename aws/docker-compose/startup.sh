@@ -61,10 +61,12 @@ else
     exit 1;
 fi
 
+pwd=$(pwd)
+
 echo "info: Starting up...";
 
 echo "info: Turning down existing cluster...";
-docker-compose -f ./docker-compose_dev.yml down --remove-orphans
+docker-compose -f "$pwd/docker-compose_dev.yml" down --remove-orphans
 
 docker stop $(docker ps -a -q)
 if [ $? -eq 0 ]; then
@@ -74,7 +76,7 @@ else
     exit 1;
 fi
 
-rm -rf volumes/*
+rm -rf "$pwd/volumes/*"
 if [ $? -eq 0 ]; then
     echo "info: Removed volumes data";
 else
@@ -84,10 +86,10 @@ fi
 
 echo "info: Restarting/Starting haproxy..."
 pkill -9 "haproxy";
-haproxy -f haproxy/haproxy.cfg &
+haproxy -f "$pwd/haproxy/haproxy.cfg" &
 
 echo "info: Starting up ELP dev cluster..."
-docker-compose -f ./docker-compose_dev.yml up --remove-orphans &
+docker-compose -f "$pwd/docker-compose_dev.yml" up --remove-orphans &
 
 sleep 5;
 
