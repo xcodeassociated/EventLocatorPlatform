@@ -64,7 +64,7 @@ fi
 echo "info: Starting up...";
 
 echo "info: Turning down existing cluster...";
-docker-compose -f ./docker-compose_dev.yml down
+docker-compose -f ./docker-compose_dev.yml down --remove-orphans
 
 docker stop $(docker ps -a -q)
 if [ $? -eq 0 ]; then
@@ -99,7 +99,7 @@ fi
 sleep 2;
 
 echo "info: Init event categories..."
-if init_event_categories | grep -q "WriteResult({ \"nInserted\" : 2 })"; then
+if init_event_categories | grep -qi "inserted"; then
   echo "info: Insert success";
 else
   echo "error: Could not insert init mongo data";
