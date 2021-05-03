@@ -70,10 +70,13 @@ fi
 
 pwd=$1
 
+echo "info: Going into: $pwd"
+cd $pwd
+
 echo "info: Starting up...";
 
 echo "info: Turning down existing cluster...";
-docker-compose -f "$pwd/docker-compose_dev.yml" down --remove-orphans
+docker-compose -f "./docker-compose_dev.yml" down --remove-orphans
 
 docker stop $(docker ps -a -q)
 if [ $? -eq 0 ]; then
@@ -96,7 +99,7 @@ pkill -9 "haproxy";
 haproxy -f "$pwd/haproxy/haproxy.cfg" &
 
 echo "info: Starting up ELP dev cluster..."
-docker-compose -f "$pwd/docker-compose_dev.yml" up --remove-orphans &
+docker-compose -f "./docker-compose_dev.yml" up --remove-orphans &
 
 sleep 5;
 
