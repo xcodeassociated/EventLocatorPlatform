@@ -61,7 +61,7 @@ else
     exit 1;
 fi
 
-if [ $@ -lt 2 ]; then
+if [ $# -eq 0 ]; then
   echo "error: Please pass PATH as argument";
   exit 1;
 else
