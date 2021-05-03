@@ -1,5 +1,5 @@
 // single node init default rs config
-rs.initiate();
+// rs.initiate();
 
 // single node init
 // rs.initiate(
@@ -11,6 +11,8 @@ rs.initiate();
 //    }
 // );
 
+db.createCollection("test");
+db.test.insert({"name": "test insert"});
 db.createUser(
         {
             user: "user",
